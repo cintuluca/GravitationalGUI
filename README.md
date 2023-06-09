@@ -16,7 +16,7 @@ If you click on one drawn point, this will open a new window containing all its 
 
 Clone the repository:
 
-`git clone https://github.com/cintuluca/atmi` <br/>
+`git clone https://github.com/cintuluca/GravitationalGUI` <br/>
 
 Move to the `GravitationalGUI` directory:
 
