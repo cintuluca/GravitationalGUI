@@ -8,7 +8,7 @@ This is the main window:
 
 ![app screenshot](imgs/main.png?raw=true)
 
-If you click on one drawn point, this will open a new window containig all its features; this is an example for the point showed in the previous picture: 
+If you click on one drawn point, this will open a new window containing all its features; this is an example for the point showed in the previous picture: 
 
 ![app screenshot](imgs/point.png?raw=true)
 
