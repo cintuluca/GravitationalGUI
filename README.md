@@ -1,6 +1,6 @@
 # GravitationalGUI
 
-GravitationalGUI is a simple Python script useful for the numerical simulation of N-body gravitational systems, with a graphical window to see the real time evolution of the bodies. In order to run the script just type the sequent command from the `GravitationalGUI` directory:
+GravitationalGUI is a simple Python script useful for the numerical simulation of N-body gravitational systems, with a graphical window to see the real time evolution of the bodies. In order to run the script just type the following command from the `GravitationalGUI` directory:
 
 `./gravGUI.py` <br/>
 
