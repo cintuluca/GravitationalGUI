@@ -1,6 +1,7 @@
 from tkinter import filedialog as fd
 from tkinter import messagebox
 from tkinter.messagebox import showinfo
+import pandas as pd
 # custiom libraries
 from lib import figures
 from lib import globalv
@@ -26,7 +27,6 @@ def simulate(root, canvas):
                     gy = gy + Gy
             obj.object.force(gx, gy)
             move(canvas, obj, globalv.dt)
-            # print(dt*i, obj.x, obj.y, obj.vx, obj.vy, obj.ax, obj.ay)
             canvas.update()   
     root.after(int(globalv.dt*1000/float(globalv.speed.get()[7:])), simulate, root, canvas)
                 
@@ -44,16 +44,30 @@ def clear(canvas):
     globalv.points = []
     canvas.delete("all")
             
-def point(M, X, Y, Vx, Vy, Ax, Ay, canvas, root):
+def point(M, X, Y, Vx, Vy, Ax, Ay, canvas, root, color):
     if M.get() == '' or X.get() == '' or Y.get() == '' or Vx.get() == '' or Vy.get() == '' or Ax.get() == '' or Ay.get() == '':
         text = "No Number Inserted!"
         messagebox.showerror("Error", text)
     else:
         m, x, y, vx, vy, ax, ay = float(M.get()), float(X.get()), float(Y.get()), float(Vx.get()), float(Vy.get()), float(Ax.get()), float(Ay.get())
         obj = gravity.object(m, ax, ay, vx, vy, x, y)
-        figures.point(obj, canvas, root)
+        figures.point(obj, canvas, root, color)
                 
-def select_file():
-    filetypes = (('text files', '*.txt'), ('All files', '*.*'))
-    filename = fd.askopenfilename(title='Open a file', initialdir='/', filetypes=filetypes)
-    showinfo(title='Selected File', message=filename)
+def select_file(root, canvas):
+	filetypes = (('text files', '*.txt'), ('All files', '*.*'))
+	filename = fd.askopenfilename(title='Open a file', filetypes=filetypes)
+	if filename is None:
+		return
+	df = pd.read_csv(filename, sep=',', names=['Mass','X','Y','Vx','Vy','Ax','Ay','Color'])
+	for i in range(len(df)):	
+		obj = gravity.object(df['Mass'][i], df['Ax'][i], df['Ay'][i], df['Vx'][i], df['Vy'][i], df['X'][i], df['Y'][i])
+		point = figures.point(obj, canvas, root, color=df['Color'][i])
+
+def select_folder(root, canvas):
+	filetypes = (('text files', '*.txt'), ('All files', '*.*'))
+	f = fd.asksaveasfile(filetypes=filetypes, defaultextension=filetypes)
+	if f is None:
+		return
+	for point in globalv.points:
+		f.write(str(point.object.m)+','+str(point.object.x)+','+str(point.object.y)+','+str(point.object.vx)+','+str(point.object.vy)+','+str(point.object.ax)+','+str(point.object.ay)+','+str(point.color)+'\n')
+	f.close()

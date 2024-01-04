@@ -42,15 +42,18 @@ class lwindow:
         label8 = Label(frame, text="Color").grid(row=8,column=0, sticky="w")
         self.colors = tk.OptionMenu(frame, globalv.color, "Black", "Red", "Blue").grid(row=8, column=1, sticky="we")
 
-        Button1 = Button(frame, text="Draw", command=lambda: commands.point(M, X, Y, Vx, Vy, Ax, Ay, canvas, root)).grid(row=9, column=1, sticky="we")
+        Button1 = Button(frame, text="Draw", command=lambda: commands.point(M, X, Y, Vx, Vy, Ax, Ay, canvas, root, globalv.color.get())).grid(row=9, column=1, sticky="we")
         Button2 = Button(frame, text="Clear", command=lambda: commands.clear(canvas)).grid(row=10, column=1, sticky="we")
         
         label9 = Label(frame, text="Load Configuration\t:").grid(row=11, column=1, pady=(50,0), sticky="w")
-        Button3 = tk.Button(frame, text='Open File', command=commands.select_file).grid(row=12, column=1, pady=(0,50), sticky="we")
+        Button3 = tk.Button(frame, text='Open File', command=lambda: commands.select_file(root, canvas)).grid(row=12, column=1, pady=(0,50), sticky="we")
+
+        label10 = Label(frame, text="Save Configuration\t:").grid(row=12, column=1, pady=(50,0), sticky="w")
+        Button4 = tk.Button(frame, text='Save File', command=lambda: commands.select_folder(root, canvas)).grid(row=13, column=1, pady=(0,50), sticky="we")
                 
-        Button4 = Button(frame, text="Start Simulation", command=commands.start).grid(row=13, column=1, sticky="we")
-        Button5 = Button(frame, text="Stop Simulation", command=commands.stop).grid(row=14, column=1, pady=(0,50), sticky="we")
+        Button5 = Button(frame, text="Start Simulation", command=commands.start).grid(row=15, column=1, sticky="we")
+        Button6 = Button(frame, text="Stop Simulation", command=commands.stop).grid(row=16, column=1, pady=(0,50), sticky="we")
         
-        self.Speed = tk.OptionMenu(frame, globalv.speed, "Speed X 0.5", "Speed X 1", "Speed X 2", "Speed X 5", "Speed X 10").grid(row=15, column=1, sticky="we")
+        self.Speed = tk.OptionMenu(frame, globalv.speed, "Speed X 0.5", "Speed X 1", "Speed X 2", "Speed X 5", "Speed X 10").grid(row=17, column=1, sticky="we")
         
 # END CLASS lwindow #
