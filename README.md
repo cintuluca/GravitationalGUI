@@ -29,6 +29,7 @@ To control and install the dependencies:
 ## GravitationalGUI requirements:
 
 `numpy (>=1.22.4)` <br/>
+`pandas (>=2.1.4)` <br/>
 `tk (>=0.1.0)` <br/>
 
 # AUTHOR
@@ -37,7 +38,7 @@ Luca Cintura <luca.cintura@gmail.com> <br />
 
 # License
 
-Atmospheric Impact Simulation (ATMI)
+Gravitational GUI
 
 Copyright (c) 2023, Luca Cintura
 

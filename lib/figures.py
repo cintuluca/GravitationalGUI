@@ -7,12 +7,12 @@ from lib import globalv
 #**********#
 class point:
 #**********#
-    def __init__(self, obj, canvas, root):
+    def __init__(self, obj, canvas, root, color):
         self.window = None
         self.object = obj
         self.canvas = canvas
         self.root = root
-        self.color = globalv.color.get()
+        self.color = color
         self.circle = self.canvas.create_oval(self.object.x+5, self.object.y+5, self.object.x-5, self.object.y-5, width=1, fill=self.color)
         self.canvas.tag_bind(self.circle, '<Button-1>', self.popup)
         globalv.points.append(self)

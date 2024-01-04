@@ -9,7 +9,7 @@ class Gui():
 #**********#
     def __init__(self, root):
         self.root = root
-        self.canvas = tk.Canvas(root, width=1800, height=1000, background='white')
+        self.canvas = tk.Canvas(root, width=root.winfo_screenwidth(), height=root.winfo_screenheight(), background='#80afd5')
         self.canvas.grid(row=0, column=2, rowspan=100)
         self.frame = Frame(self.root).grid(row=0, column=0, sticky="n")
         
