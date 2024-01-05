@@ -56,7 +56,6 @@ def point(M, X, Y, Vx, Vy, Ax, Ay, canvas, root, color):
         text = "No Number Inserted!"
         messagebox.showerror("Error", text)
     else:
-        print(globalv.mult)
         m, x, y, vx, vy, ax, ay = float(M.get())*globalv.mult[globalv.M_unit.get()], float(X.get())*globalv.mult[globalv.X_unit.get()], float(Y.get())*globalv.mult[globalv.Y_unit.get()], float(Vx.get())*globalv.mult[globalv.Vx_unit.get()], float(Vy.get())*globalv.mult[globalv.Vy_unit.get()], float(Ax.get())*globalv.mult[globalv.Ax_unit.get()], float(Ay.get())*globalv.mult[globalv.Ay_unit.get()]
         obj = gravity.object(m, ax, ay, vx, vy, x, y)
         figures.point(obj, canvas, root, color)
