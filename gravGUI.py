@@ -10,5 +10,6 @@ if __name__== '__main__':
     root=tk.Tk()
     root.title("Gravitational GUI")
     globalv.init()
+    globalv.trace(root)
     gui=gui.Gui(root)
     root.mainloop()
