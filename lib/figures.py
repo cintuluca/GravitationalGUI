@@ -13,15 +13,24 @@ class point:
         self.canvas = canvas
         self.root = root
         self.color = color
-        self.circle = self.canvas.create_oval(self.object.x+5, self.object.y+5, self.object.x-5, self.object.y-5, width=1, fill=self.color)
+        self.circle = self.canvas.create_oval(self.object.x+5, self.object.y+5, self.object.x-5, self.object.y-5, width=1, fill=self.color, tags="point")
+        self.path = []
+        self.canvas.lift('ref')
         self.canvas.tag_bind(self.circle, '<Button-1>', self.popup)
         globalv.points.append(self)
         
     def delete(self):
         self.canvas.delete(self.circle)
+        for line in self.path:
+            self.canvas.delete(line)
         self.window.destroy()
         globalv.points.remove(self)
         del self
+
+    def delete_path(self):
+        for line in self.path:
+            self.canvas.delete(line)
+        self.window.destroy()
         
     def info(self, cond=False):
         self.Mass.set("Mass = "+str(self.object.m)+" Kg")
@@ -55,7 +64,8 @@ class point:
         Label(self.window, textvariable =self.D).grid(row=6, column=0, padx=10, pady=10, sticky="we")
         self.info(cond=True)
         Button(self.window, text="Delete", command=self.delete).grid(row=7, column=0, padx=10, pady=10)
+        Button(self.window, text="Delete Path", command=self.delete_path).grid(row=8, column=0, padx=10, pady=10)
         # the window must always stay on top
-        self.stay_on_top()
+        self.window.wm_attributes("-topmost", True)
         
 # END CLASS point #
