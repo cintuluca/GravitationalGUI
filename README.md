@@ -40,7 +40,7 @@ Luca Cintura <luca.cintura@gmail.com> <br />
 
 Gravitational GUI
 
-Copyright (c) 2023, Luca Cintura
+Copyright (c) 2024, Luca Cintura
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
