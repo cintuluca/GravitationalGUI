@@ -1,6 +1,7 @@
 from tkinter import filedialog as fd
 from tkinter import messagebox
 from tkinter.messagebox import showinfo
+import numpy as np
 import pandas as pd
 # custiom libraries
 from lib import figures
@@ -10,14 +11,26 @@ from lib import gravity
 def move(canvas, point, dt):
             x, y = point.object.x, point.object.y
             point.object.evolve(dt)
-            canvas.moveto(point.circle, point.object.x-5, point.object.y-5)
+            canvas.move(point.circle, point.object.x-x, point.object.y-y)
             if globalv.stvar.get() == "Path":
                 path = canvas.create_line(x, y, point.object.x, point.object.y, fill=point.color, tags="path")
                 canvas.tag_bind(path, '<Button-1>', point.popup)
                 canvas.lift('ref')
                 point.path.append(path)
+
+def merge(canvas, obj1, obj2):
+    obj1.object.vx = (obj1.object.m*obj1.object.vx + obj2.object.m*obj2.object.vx) / (obj1.object.m + obj2.object.m)
+    obj1.object.vy = (obj1.object.m*obj1.object.vy + obj2.object.m*obj2.object.vy) / (obj1.object.m + obj2.object.m)
+    obj1.object.m += obj2.object.m
+    obj1.dr = 2 + np.log(1 + obj1.object.m)
+    canvas.delete(obj1.circle)
+    obj1.circle = canvas.create_oval(obj1.object.x+obj1.dr, obj1.object.y+obj1.dr, obj1.object.x-obj1.dr, obj1.object.y-obj1.dr, width=1, fill=obj1.color, tags="point")
+    canvas.lift('ref')
+    canvas.tag_bind(obj1.circle, '<Button-1>', obj1.popup)
+    obj2.delete()
             
 def simulate(root, canvas):
+    flag = True
     if globalv.running:
         for obj in globalv.points:
             gx, gy = 0, 0
@@ -25,12 +38,20 @@ def simulate(root, canvas):
                 dx = obj.object.x - point.object.x
                 dy = obj.object.y - point.object.y
                 if dx != 0 or dy != 0:
-                    Gx, Gy = gravity.G_acc(point.object.m, dx, dy)
-                    gx = gx + Gx
-                    gy = gy + Gy
-            obj.object.force(gx, gy)
-            move(canvas, obj, globalv.dt)
-            canvas.update()
+                    if dx**2 + dy**2 <= np.max([obj.dr, point.dr])/2 + 1:
+                        if obj.object.m > point.object.m:
+                            merge(canvas, obj, point)
+                        else:
+                            merge(canvas, point, obj)
+                            flag = False
+                    else:
+                        Gx, Gy = gravity.G_acc(point.object.m, dx, dy)
+                        gx = gx + Gx
+                        gy = gy + Gy
+            if flag:
+                obj.object.force(gx, gy)
+                move(canvas, obj, globalv.dt)
+                canvas.update()
     if globalv.speed.get() == 'Custom':
         root.after(int(globalv.dt*1000), simulate, root, canvas)
     else:
@@ -63,7 +84,7 @@ def point(M, X, Y, Vx, Vy, Ax, Ay, canvas, root, color):
 def select_file(root, canvas):
 	filetypes = (('text files', '*.txt'), ('All files', '*.*'))
 	filename = fd.askopenfilename(title='Open a file', filetypes=filetypes)
-	if filename == ():
+	if filename == () or filename == '':
 		return
 	df = pd.read_csv(filename, sep=',', names=['Mass','X','Y','Vx','Vy','Ax','Ay','Color'])
 	for i in range(len(df)):	

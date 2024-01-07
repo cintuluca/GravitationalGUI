@@ -13,7 +13,8 @@ class point:
         self.canvas = canvas
         self.root = root
         self.color = color
-        self.circle = self.canvas.create_oval(self.object.x+5, self.object.y+5, self.object.x-5, self.object.y-5, width=1, fill=self.color, tags="point")
+        self.dr = 2 + np.log(1 + self.object.m)
+        self.circle = self.canvas.create_oval(self.object.x+self.dr, self.object.y+self.dr, self.object.x-self.dr, self.object.y-self.dr, width=1, fill=self.color, tags="point")
         self.path = []
         self.canvas.lift('ref')
         self.canvas.tag_bind(self.circle, '<Button-1>', self.popup)
@@ -23,7 +24,8 @@ class point:
         self.canvas.delete(self.circle)
         for line in self.path:
             self.canvas.delete(line)
-        self.window.destroy()
+        if self.window:
+            self.window.destroy()
         globalv.points.remove(self)
         del self
 
