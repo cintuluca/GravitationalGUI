@@ -28,6 +28,18 @@ def merge(canvas, obj1, obj2):
     canvas.lift('ref')
     canvas.tag_bind(obj1.circle, '<Button-1>', obj1.popup)
     obj2.delete()
+    
+def update_scrollregion(canvas):
+    w1, h1, w2, h2 = canvas.bbox('all') + np.array([-100,-100,100,100])
+    if w1 > -globalv.width:
+        w1 = -globalv.width
+    if w2 < globalv.width:
+        w2 = globalv.width
+    if h1 > -globalv.height:
+        h1 = -globalv.height
+    if h2 < globalv.height:
+        h2 = globalv.height        
+    canvas.configure(scrollregion=(w1,h1,w2,h2))
             
 def simulate(root, canvas):
     flag = True
@@ -52,6 +64,7 @@ def simulate(root, canvas):
                 obj.object.force(gx, gy)
                 move(canvas, obj, globalv.dt)
                 canvas.update()
+                update_scrollregion(canvas)
     if globalv.speed.get() == 'Custom':
         root.after(int(globalv.dt*1000), simulate, root, canvas)
     else:
@@ -71,6 +84,9 @@ def clear(canvas):
     globalv.points = []
     canvas.delete("point")
     canvas.delete("path")
+    canvas.configure(scrollregion=(-globalv.width, -globalv.height, globalv.width, globalv.height))
+    canvas.xview_moveto(0.25)
+    canvas.yview_moveto(0.25)
             
 def point(M, X, Y, Vx, Vy, Ax, Ay, canvas, root, color):
     if M.get() == '' or X.get() == '' or Y.get() == '' or Vx.get() == '' or Vy.get() == '' or Ax.get() == '' or Ay.get() == '':

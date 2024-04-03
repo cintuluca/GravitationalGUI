@@ -7,6 +7,13 @@ from lib import options
 # global variables for GUI execution
 
 def init():
+
+    global width
+    width = 0
+    
+    global height
+    height = 0
+
     global dt
     dt = 1
 

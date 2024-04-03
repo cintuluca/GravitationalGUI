@@ -12,4 +12,5 @@ if __name__== '__main__':
     globalv.init()
     globalv.trace(root)
     gui=gui.Gui(root)
+    gui.createScrollableContainer()
     root.mainloop()
